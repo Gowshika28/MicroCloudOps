@@ -5,6 +5,11 @@ app = Flask(__name__)
 
 services = [
     {
+        "name": "API Gateway",
+        "url": "http://api-gateway:8000/health",
+        "port": "8000"
+    },
+    {
         "name": "User Service",
         "url": "http://user-service:5001/health",
         "port": "5001"
@@ -89,6 +94,11 @@ def dashboard():
             font-size: 40px;
         }}
 
+        .header p {{
+            color: #cbd5e1;
+            font-size: 18px;
+        }}
+
         .container {{
             padding: 30px;
         }}
@@ -104,10 +114,17 @@ def dashboard():
             border-radius: 15px;
             padding: 20px;
             border: 1px solid #1e293b;
+            box-shadow: 0 0 15px rgba(56,189,248,0.08);
         }}
 
         h2 {{
             color: #38bdf8;
+        }}
+
+        .footer {{
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
         }}
 
     </style>
@@ -127,6 +144,10 @@ def dashboard():
             {cards}
         </div>
 
+    </div>
+
+    <div class="footer">
+        MicroCloudOps © 2026 | DevOps + Cloud + Microservices Platform
     </div>
 
 </body>
