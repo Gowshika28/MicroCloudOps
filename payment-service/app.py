@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from flask import Flask
+import requests
 
 app = Flask(__name__)
 
@@ -6,35 +7,21 @@ app = Flask(__name__)
 def home():
     return "Payment Service Running"
 
-@app.route("/payments")
-def payments():
-    return jsonify([
-        {
-            "payment_id": 201,
-            "order_id": 101,
-            "amount": 59999,
-            "status": "Success"
-        },
-        {
-            "payment_id": 202,
-            "order_id": 102,
-            "amount": 29999,
-            "status": "Pending"
-        }
-    ])
+@app.route("/payment")
+def payment():
+    notification_response = requests.get("http://notification-service:5005/notify")
 
-@app.route("/process-payment", methods=["POST"])
-def process_payment():
-    return jsonify({
-        "message": "Payment processed successfully",
-        "status": "Success"
-    })
+    return {
+        "message": "Payment completed successfully",
+        "notification": notification_response.json()
+    }
 
 @app.route("/health")
 def health():
-    return jsonify({
+    return {
         "status": "healthy",
         "service": "payment-service"
-    })
+    }, 200
 
-app.run(host="0.0.0.0", port=5004)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5004)

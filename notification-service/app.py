@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -6,26 +6,19 @@ app = Flask(__name__)
 def home():
     return "Notification Service Running"
 
-@app.route("/notifications")
-def notifications():
-    return jsonify([
-        {
-            "notification_id": 301,
-            "type": "Email",
-            "message": "Order placed successfully"
-        },
-        {
-            "notification_id": 302,
-            "type": "SMS",
-            "message": "Payment received"
-        }
-    ])
+@app.route("/notify")
+def notify():
+    return {
+        "message": "Notification sent successfully",
+        "type": "payment-confirmation"
+    }
 
 @app.route("/health")
 def health():
-    return jsonify({
+    return {
         "status": "healthy",
         "service": "notification-service"
-    })
+    }, 200
 
-app.run(host="0.0.0.0", port=5005)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5005)
