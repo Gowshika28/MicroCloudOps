@@ -6,6 +6,14 @@ app = Flask(__name__)
 def home():
     return "Product Service Running"
 
+@app.route("/product")
+def product():
+    return {
+        "product_name": "Laptop",
+        "price": 75000,
+        "stock": "Available"
+    }
+
 @app.route("/health")
 def health():
     return {
