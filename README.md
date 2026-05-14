@@ -33,3 +33,31 @@ MicroCloudOps is a microservices-based DevOps project built using Flask, Docker,
 - Centralized logging
 - Cloud deployment
 - CI/CD pipeline
+## Architecture
+
+MicroCloudOps follows a microservices architecture where each service runs independently inside its own Docker container.
+
+### Services
+
+| Service | Purpose | Port |
+|---------|---------|------|
+| Frontend Service | Dashboard UI | 5000 |
+| User Service | User management | 5001 |
+| Product Service | Product management | 5002 |
+| Order Service | Order processing | 5003 |
+| Payment Service | Payment handling | 5004 |
+| Notification Service | Notifications and alerts | 5005 |
+
+## Monitoring Stack
+
+- Prometheus for monitoring
+- Grafana for visualization
+- Health endpoints for service monitoring
+
+## DevOps Features
+
+- Dockerized microservices
+- Docker Compose orchestration
+- GitHub version control
+- Monitoring configuration
+- Health check endpoints
