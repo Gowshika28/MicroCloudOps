@@ -1,198 +1,132 @@
 from flask import Flask
+import requests
 
 app = Flask(__name__)
 
+services = [
+    {
+        "name": "User Service",
+        "url": "http://user-service:5001/health",
+        "port": "5001"
+    },
+    {
+        "name": "Product Service",
+        "url": "http://product-service:5002/health",
+        "port": "5002"
+    },
+    {
+        "name": "Order Service",
+        "url": "http://order-service:5003/health",
+        "port": "5003"
+    },
+    {
+        "name": "Payment Service",
+        "url": "http://payment-service:5004/health",
+        "port": "5004"
+    },
+    {
+        "name": "Notification Service",
+        "url": "http://notification-service:5005/health",
+        "port": "5005"
+    }
+]
+
 @app.route("/")
 def dashboard():
-    return """
+
+    cards = ""
+
+    for service in services:
+
+        try:
+            response = requests.get(service["url"], timeout=2)
+
+            if response.status_code == 200:
+                status = "Healthy"
+                color = "#22c55e"
+            else:
+                status = "Unhealthy"
+                color = "#ef4444"
+
+        except:
+            status = "Down"
+            color = "#ef4444"
+
+        cards += f"""
+        <div class="card">
+            <h2>{service['name']}</h2>
+            <p>Port: {service['port']}</p>
+            <p style="color:{color}; font-weight:bold;">
+                ● {status}
+            </p>
+        </div>
+        """
+
+    return f"""
 <!DOCTYPE html>
 <html>
 <head>
     <title>MicroCloudOps Dashboard</title>
+
     <style>
-        body {
+
+        body {{
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             background: #020617;
             color: white;
-        }
+        }}
 
-        .header {
-            background: linear-gradient(90deg, #0f172a, #1e40af);
+        .header {{
+            background: linear-gradient(90deg,#0f172a,#1d4ed8);
             padding: 30px;
             text-align: center;
-        }
+        }}
 
-        .header h1 {
+        .header h1 {{
+            color: #38bdf8;
             margin: 0;
-            font-size: 42px;
-            color: #38bdf8;
-        }
+            font-size: 40px;
+        }}
 
-        .header p {
-            color: #cbd5e1;
-            font-size: 18px;
-        }
-
-        .container {
+        .container {{
             padding: 30px;
-        }
+        }}
 
-        .cards {
+        .grid {{
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3,1fr);
             gap: 20px;
-        }
+        }}
 
-        .card {
+        .card {{
             background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            padding: 22px;
-            box-shadow: 0 0 20px rgba(56,189,248,0.08);
-        }
-
-        .card h2 {
-            color: #38bdf8;
-            margin-top: 0;
-        }
-
-        .status {
-            color: #22c55e;
-            font-weight: bold;
-        }
-
-        .tag {
-            display: inline-block;
-            background: #1e293b;
-            color: #93c5fd;
-            padding: 6px 10px;
-            border-radius: 20px;
-            margin-top: 8px;
-        }
-
-        .section-title {
-            margin-top: 40px;
-            color: #facc15;
-        }
-
-        .monitoring {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .footer {
-            text-align: center;
+            border-radius: 15px;
             padding: 20px;
-            color: #94a3b8;
-        }
+            border: 1px solid #1e293b;
+        }}
+
+        h2 {{
+            color: #38bdf8;
+        }}
+
     </style>
+
 </head>
 
 <body>
 
     <div class="header">
         <h1>MicroCloudOps</h1>
-        <p>Intelligent DevOps Automation Platform for Microservices Monitoring</p>
+        <p>Live DevOps Monitoring Dashboard</p>
     </div>
 
     <div class="container">
 
-        <h2 class="section-title">Microservices Status</h2>
-
-        <div class="cards">
-            <div class="card">
-                <h2>Frontend Service</h2>
-                <p>Dashboard UI</p>
-                <p>Port: 5000</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">UI Layer</span>
-            </div>
-
-            <div class="card">
-                <h2>User Service</h2>
-                <p>User management service</p>
-                <p>Port: 5001</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">Backend API</span>
-            </div>
-
-            <div class="card">
-                <h2>Product Service</h2>
-                <p>Product database and product APIs</p>
-                <p>Port: 5002</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">SQLite DB</span>
-            </div>
-
-            <div class="card">
-                <h2>Order Service</h2>
-                <p>Creates orders by calling Product Service</p>
-                <p>Port: 5003</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">Service Communication</span>
-            </div>
-
-            <div class="card">
-                <h2>Payment Service</h2>
-                <p>Payment processing flow</p>
-                <p>Port: 5004</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">Transaction Layer</span>
-            </div>
-
-            <div class="card">
-                <h2>Notification Service</h2>
-                <p>Sends payment notifications</p>
-                <p>Port: 5005</p>
-                <p class="status">● Healthy</p>
-                <span class="tag">Alert System</span>
-            </div>
+        <div class="grid">
+            {cards}
         </div>
 
-        <h2 class="section-title">Monitoring Stack</h2>
-
-        <div class="monitoring">
-            <div class="card">
-                <h2>Prometheus</h2>
-                <p>Collects service metrics and monitors health endpoints.</p>
-                <p>Port: 9090</p>
-                <span class="tag">Metrics Monitoring</span>
-            </div>
-
-            <div class="card">
-                <h2>Grafana</h2>
-                <p>Visualizes metrics using dashboards and graphs.</p>
-                <p>Port: 3000</p>
-                <span class="tag">Dashboard Visualization</span>
-            </div>
-        </div>
-
-        <h2 class="section-title">DevOps Features</h2>
-
-        <div class="cards">
-            <div class="card">
-                <h2>Docker</h2>
-                <p>Each service runs inside its own container.</p>
-            </div>
-
-            <div class="card">
-                <h2>Docker Compose</h2>
-                <p>Runs all microservices together using one command.</p>
-            </div>
-
-            <div class="card">
-                <h2>GitHub CI/CD</h2>
-                <p>Project is version controlled and ready for pipeline automation.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="footer">
-        MicroCloudOps © 2026 | DevOps + Cloud + Microservices Project
     </div>
 
 </body>
