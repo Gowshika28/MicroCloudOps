@@ -1,6 +1,18 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///products.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    price = db.Column(db.Integer)
+    stock = db.Column(db.String(50))
 
 @app.route("/")
 def home():
@@ -8,11 +20,30 @@ def home():
 
 @app.route("/product")
 def product():
-    return {
-        "product_name": "Laptop",
-        "price": 75000,
-        "stock": "Available"
-    }
+    product = Product.query.first()
+
+    if product:
+        return {
+            "id": product.id,
+            "product_name": product.name,
+            "price": product.price,
+            "stock": product.stock
+        }
+
+    return {"message": "No product found"}
+
+@app.route("/add-product")
+def add_product():
+    product = Product(
+        name="Laptop",
+        price=75000,
+        stock="Available"
+    )
+
+    db.session.add(product)
+    db.session.commit()
+
+    return {"message": "Product added successfully"}
 
 @app.route("/health")
 def health():
@@ -20,6 +51,9 @@ def health():
         "status": "healthy",
         "service": "product-service"
     }, 200
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002)
