@@ -61,3 +61,30 @@ MicroCloudOps follows a microservices architecture where each service runs indep
 - GitHub version control
 - Monitoring configuration
 - Health check endpoints
+## API Gateway
+
+The API Gateway acts as a single entry point for accessing backend microservices.
+
+### Gateway Routes
+
+- `/product` → Product Service
+- `/order` → Order Service
+- `/payment` → Payment Service
+- `/notification` → Notification Service
+- `/health` → API Gateway health check
+
+## Database Integration
+
+- Product Service uses SQLite for product data
+- Order Service uses SQLite for order data
+
+## Frontend Dashboard
+
+The frontend dashboard displays live service health status for:
+
+- API Gateway
+- User Service
+- Product Service
+- Order Service
+- Payment Service
+- Notification Service
