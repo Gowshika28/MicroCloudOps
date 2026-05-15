@@ -3,7 +3,10 @@ import requests
 
 app = Flask(__name__)
 
-services = [
+
+        "name": "Notification Service",
+        "url": "http://notification-service:5005/health",
+        "port": "5005"services = [
     {
         "name": "API Gateway",
         "url": "http://api-gateway:8000/health",
@@ -30,9 +33,6 @@ services = [
         "port": "5004"
     },
     {
-        "name": "Notification Service",
-        "url": "http://notification-service:5005/health",
-        "port": "5005"
     }
 ]
 

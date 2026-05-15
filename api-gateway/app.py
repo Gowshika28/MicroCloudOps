@@ -8,11 +8,11 @@ def home():
     return {
         "message": "API Gateway Running",
         "routes": {
-            "user": "/user",
             "product": "/product",
             "order": "/order",
             "payment": "/payment",
-            "notification": "/notification"
+            "notification": "/notification",
+            "health": "/health"
         }
     }
 

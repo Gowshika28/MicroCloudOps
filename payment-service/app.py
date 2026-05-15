@@ -9,7 +9,10 @@ def home():
 
 @app.route("/payment")
 def payment():
-    notification_response = requests.get("http://notification-service:5005/notify")
+    notification_response = requests.get(
+        "http://notification-service:5005/notify",
+        timeout=3
+    )
 
     return {
         "message": "Payment completed successfully",
