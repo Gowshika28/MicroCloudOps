@@ -88,3 +88,57 @@ The frontend dashboard displays live service health status for:
 - Order Service
 - Payment Service
 - Notification Service
+# MicroCloudOps
+
+MicroCloudOps is a microservices-based DevOps platform built using Flask, Docker, and monitoring tools.
+
+## Features
+
+- Microservices Architecture
+- API Gateway
+- Service-to-Service Communication
+- Health Monitoring Dashboard
+- SQLite Databases
+- Prometheus Metrics
+- Docker & Docker Compose Setup
+- GitHub CI/CD Workflow
+
+---
+
+## Services
+
+| Service | Port | Description |
+|---|---|---|
+| Frontend Service | 5000 | Monitoring Dashboard |
+| API Gateway | 8000 | Central API Routing |
+| User Service | 5001 | User Management |
+| Product Service | 5002 | Product Management |
+| Order Service | 5003 | Order Processing |
+| Payment Service | 5004 | Payment Handling |
+| Notification Service | 5005 | Notifications |
+
+---
+
+## Architecture
+
+Frontend Dashboard → API Gateway → Microservices
+
+Microservices communicate internally using REST APIs.
+
+---
+
+## Tech Stack
+
+- Python Flask
+- SQLite
+- Docker
+- Docker Compose
+- Prometheus
+- GitHub Actions
+
+---
+
+## Run Locally
+
+```bash
+python app.py
